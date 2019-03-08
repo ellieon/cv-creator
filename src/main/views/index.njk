@@ -5,13 +5,49 @@
     <h1>{{ title }}</h1>
 {% endblock %}
 {% block content %}
-<form method="POST">
-    First name:<br>
-    <input type="text" name="firstname">
-    <br>
-    Last name:<br>
-    <input type="text" name="lastname">
-    <br><br>
-    <input type="submit" value="Submit">
-</form>
+    <form method="POST">
+        First name:<br>
+        <input type="text" name="firstname">
+        <br>
+        Last name:<br>
+        <input type="text" name="lastname">
+        <br><br>
+        <div class="amount-input">
+            Description:
+            <input type="text" name="amount[1][desc]">
+            Quantity:
+            <input type="number" name="amount[1][quantity]">
+            Value:
+            <input type="number" name="amount[1][value]">
+            <br>
+        </div>
+        <a href="javascript:addRow()">Add a row</a>
+        <a href="javascript:removeRow()">Remove a row</a>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function addRow () {
+            let elements = document.getElementsByClassName("amount-input")
+            let last = elements[elements.length - 1]
+            last.append(incrementId(last.cloneNode(true)))
+        }
+
+        function removeRow () {
+            let elements = document.getElementsByClassName("amount-input")
+            if(elements.length > 1) {
+                elements[elements.length - 1].remove()
+            }
+        }
+
+        function incrementId (node) {
+            node.innerHTML = node.innerHTML.replace(/amount\[(\d+)\]/g, function (match, capturedRowIndex) {
+                return 'amount[' + (parseInt(capturedRowIndex) + 1) + ']'
+            })
+            return node
+        }
+    </script>
 {% endblock %}

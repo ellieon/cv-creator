@@ -7,7 +7,7 @@ import * as bodyParser from 'body-parser'
 const app: express.Application = express()
 
 
-let port = process.env.PORT || 8080
+let port = process.env.PORT || 3000
 
 nunjucks.configure('src/main/views', {
     autoescape: true,
