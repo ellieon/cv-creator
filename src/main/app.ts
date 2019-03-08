@@ -6,6 +6,9 @@ import * as bodyParser from 'body-parser'
 
 const app: express.Application = express()
 
+
+let port = process.env.PORT || 8080
+
 nunjucks.configure('src/main/views', {
     autoescape: true,
     express: app,
@@ -27,8 +30,8 @@ app.use('/', (req, res, next) => {
 app.use('/', Routes)
 
 
-app.listen(3000, function () {
-    console.log('Example app listening on port 3000!')
+app.listen(port, function () {
+    console.log(`Listening on port: ${port}!`)
 })
 
 
