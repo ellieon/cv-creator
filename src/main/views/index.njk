@@ -1,0 +1,17 @@
+{% extends "macro/main.njk" %}
+{% set title = "Hello World" %}
+
+{% block header %}
+    <h1>{{ title }}</h1>
+{% endblock %}
+{% block content %}
+<form method="POST">
+    First name:<br>
+    <input type="text" name="firstname">
+    <br>
+    Last name:<br>
+    <input type="text" name="lastname">
+    <br><br>
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}
