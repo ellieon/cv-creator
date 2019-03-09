@@ -7,25 +7,37 @@
 {% block content %}
     <form method="POST">
         First name:<br>
-        <input type="text" name="firstname">
+        <input type="text" name="firstname" value="{{ form.model.firstName }}">
         <br>
         Last name:<br>
-        <input type="text" name="lastname">
+        <input type="text" name="lastname" value="{{ form.model.lastName }}">
         <br><br>
-        <div class="amount-input">
-            Description:
-            <input type="text" name="amount[1][desc]">
-            Quantity:
-            <input type="number" name="amount[1][quantity]">
-            Value:
-            <input type="number" name="amount[1][value]">
-            <br>
-        </div>
+        {% for row in form.model.amountLines %}
+            <div class="amount-input">
+                Description:
+                <input type="text" name="amount[{{ loop.index0 }}][desc]" value="{{ row.desc }}">
+                Quantity:
+                <input type="number" name="amount[{{ loop.index0 }}][quantity]" value="{{ row.quantity }}">
+                Value:
+                <input type="number" name="amount[{{ loop.index0 }}][value]" value="{{ row.value }}">
+                <br>
+            </div>
+        {% endfor %}
         <a href="javascript:addRow()">Add a row</a>
         <a href="javascript:removeRow()">Remove a row</a>
         <br>
         <input type="submit" value="Submit">
     </form>
+    {% if form.errors.length > 0 %}
+        <div class="errors">
+            <h5>Errors:</h5>
+            <ul>
+                {% for error in form.errors %}
+                    <li>{{ error.property }}: {{ form.getValidationMessageFor(error.property) }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block scripts %}
@@ -33,12 +45,12 @@
         function addRow () {
             let elements = document.getElementsByClassName("amount-input")
             let last = elements[elements.length - 1]
-            last.append(incrementId(last.cloneNode(true)))
+            last.append(removeValues(incrementId(last.cloneNode(true))))
         }
 
         function removeRow () {
             let elements = document.getElementsByClassName("amount-input")
-            if(elements.length > 1) {
+            if (elements.length > 1) {
                 elements[elements.length - 1].remove()
             }
         }
@@ -47,6 +59,11 @@
             node.innerHTML = node.innerHTML.replace(/amount\[(\d+)\]/g, function (match, capturedRowIndex) {
                 return 'amount[' + (parseInt(capturedRowIndex) + 1) + ']'
             })
+            return node
+        }
+
+        function removeValues (node) {
+            node.setAttribute("value", "")
             return node
         }
     </script>
