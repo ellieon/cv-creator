@@ -10,5 +10,6 @@ export class ValidatedForm <T> {
     }
 
     public getValidationMessageFor(property: string): string {
+        return "TODO: Get validation messages"
     }
 }
